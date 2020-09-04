@@ -18,14 +18,17 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
+require("./routes/api")(app);
+require("../routes/html")(app);
+
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 
 // var apiRoutes = require (path.join(__dirname, "routes/api.js"));
 // app.use("/api", apiRoutes);
 
-require('./routes/api')(app);
-require('./routes/html')(app);
+// require('./routes/api')(app);
+// require('./routes/html')(app);
 
 
 
