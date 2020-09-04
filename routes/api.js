@@ -1,108 +1,67 @@
+var db = require("../models");
 
-// var db = require("../models");
+module.exports = function(app) {
 
-// module.exports = function(app) {
-
-//     // Used by api.js to get last workout
-//     app.get("/api/workouts", (req, res) => {
-//         db.Workout.find({})
-//         .then(workout => {
-//             res.json(workout);
-//         })
-//         .catch(err => {
-//             res.json(err);
-//         });
-//     });
+    // Used by api.js to get last workout
+    app.get("/api/workouts", (req, res) => {
+        db.Workout.find({})
+        .then(workout => {
+            res.json(workout);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+    });
     
-//     // Creates a new workout in the workout database
-//     app.post("/api/workouts", async (req, res)=> {
-//         try{
-//             const response = await db.Workout.create({type: "workout"})
-//             res.json(response);
-//         }
-//         catch(err){
-//             console.log("error occurred creating a workout: ", err)
-//         }
-//     })
+    // Creates a new workout in the workout database
+    app.post("/api/workouts", async (req, res)=> {
+        try{
+            const response = await db.Workout.create({type: "workout"})
+            res.json(response);
+        }
+        catch(err){
+            console.log("error occurred creating a workout: ", err)
+        }
+    })
 
-//     // Used by api.js to add an exercise to a workout
-//     app.put("/api/workouts/:id", ({body, params}, res) => {
-//         // console.log(body, params)
-//         const workoutId = params.id;
-//         let savedExercises = [];
+    // Used by api.js to add an exercise to a workout
+    app.put("/api/workouts/:id", ({body, params}, res) => {
+        // console.log(body, params)
+        const workoutId = params.id;
+        let savedExercises = [];
 
-//         // gets all the currently saved exercises in the current workout
-//         db.Workout.find({_id: workoutId})
-//             .then(dbWorkout => {
-//                 // console.log(dbWorkout)
-//                 savedExercises = dbWorkout[0].exercises;
-//                 res.json(dbWorkout[0].exercises);
-//                 let allExercises = [...savedExercises, body]
-//                 console.log(allExercises)
-//                 updateWorkout(allExercises)
-//             })
-//             .catch(err => {
-//                 res.json(err);
-//             });
+        // gets all the currently saved exercises in the current workout
+        db.Workout.find({_id: workoutId})
+            .then(dbWorkout => {
+                // console.log(dbWorkout)
+                savedExercises = dbWorkout[0].exercises;
+                res.json(dbWorkout[0].exercises);
+                let allExercises = [...savedExercises, body]
+                console.log(allExercises)
+                updateWorkout(allExercises)
+            })
+            .catch(err => {
+                res.json(err);
+            });
 
-//         function updateWorkout(exercises){
-//             db.Workout.findByIdAndUpdate(workoutId, {exercises: exercises}, function(err, doc){
-//             if(err){
-//                 console.log(err)
-//             }
+        function updateWorkout(exercises){
+            db.Workout.findByIdAndUpdate(workoutId, {exercises: exercises}, function(err, doc){
+            if(err){
+                console.log(err)
+            }
 
-//             })
-//         }
+            })
+        }
             
-//     })
+    })
 
-//     app.get("/api/workouts/range", (req, res) => {
-//         db.Workout.find({})
-//         .then(workout => {
-//             res.json(workout);
-//         })
-//         .catch(err => {
-//             res.json(err);
-//         });
-//     }); 
-// };
-
-
-// const API = {
-//   async getLastWorkout() {
-//     const res = await fetch("/api/workouts");
-//     const json = await res.json();
-
-//     return json[json.length - 1];
-//   },
-//   async addExercise(data) {
-//     const id = location.search.split("=")[1];
-
-//     const res = await fetch("/api/workouts/" + id, {
-//       method: "PUT",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(data)
-//     });
-
-//     const json = await res.json();
-
-//     return json;
-//   },
-//   async createWorkout() {
-//     const res = await fetch("/api/workouts", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" }
-//     });
-
-//     const json = await res.json();
-
-//     return json;
-//   },
-
-//   async getWorkoutsInRange() {
-//     const res = await fetch(`/api/workouts/range`);
-//     const json = await res.json();
-    
-//     return json;
-//   },
-// };
+    app.get("/api/workouts/range", (req, res) => {
+        db.Workout.find({})
+        .then(workout => {
+            res.json(workout);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+    }); 
+};
